@@ -1,37 +1,51 @@
 Vue.component('post-component', {
+   props: ['row'],
+   methods: {
+      home() {
+         this.$emit('home');
+      }
+   },
    template: `
-      <div class="col-md-8">
-         <h2><?php echo $post_arr['title']; ?></h2>
-         <small class="text-muted"><?php echo $post_arr['category_name']; ?></small>
-         <p class="card-text mt-3 mb-2"><?php echo $post_arr['body']; ?></p>
+      <div>
+         <h2>{{ row.title }}</h2>
+         <small class="text-muted">{{ row.category_name }}</small>
+         <p class="card-text mt-3 mb-2">{{ row.body }}</p>
          <div class="form-group mt-4">
-            <a href="index.php" class="btn btn-default">&laquo; Back</a>
+            <button @click="home()" class="btn btn-default">&laquo; Back</button>
          </div>
       </div>
    `
 });
 
 Vue.component('posts-component', {
-   props: ['post'],
+   props: ['posts'],
    data() {
       return {
-         infos: []
+
       }
    },
    methods: {
-      viewSingle() {
-         this.$emit('viewSingle', 'testing')
+      viewPost(id) {
+         this.$emit('viewPost', id);
       }
    },
    template: `
-      <div class="card mb-3">
-         <div class="card-body">
-            <h4 class="card-title"><button @click="viewSingle()">{{post.title}}</button></h4>
-            <p class="card-text">{{post.body}}</p>
+      <div>
+         <h2 class="mb-3">Posts</h2>
+         <div v-for="blog in posts">
+            <div class="card mb-3">
+               <div class="card-body">
+                  <h4 class="card-title"><a href="#" @click.prevent="viewPost(blog.id)">{{blog.title}}</a></h4>
+                  <p class="card-text">{{blog.body}}</p>
+               </div>
+               <div class="card-footer">
+                  <small class="text-muted">{{blog.category_name}}</small>
+                  <small class="text-muted float-right">{{blog.created_at}}</small>
+               </div>
+            </div>
          </div>
-         <div class="card-footer">
-            <small class="text-muted">{{post.category_name}}</small>
-            <small class="text-muted float-right">{{post.created_at}}</small>
+         <div class="form-group text-center mt-4">
+            <button class="btn btn-default">Load more...</button>
          </div>
       </div>
    `
@@ -42,20 +56,21 @@ var app = new Vue({
    el: '#app',
    data: {
       blogs: [],
-      component: 'posts-component'
+      post: {},
+      all: true
    },
    methods: {
-      read_single(id) {
-         console.log("viewing...!");
+      readPost(id) {
          fetch("api/read_single.php?id=" + id)
             .then(response => response.json())
             .then((data) => {
-               this.infos = data;
-               console.log(this.infos);
-            })
+               this.post = data;
+               console.log(data);
+            });
+         this.all = false
       },
-      sayHi() {
-         console.log('hi');
+      back() {
+         this.all = true;
       }
    },
    mounted() {
@@ -68,8 +83,8 @@ var app = new Vue({
    },
    template: `
       <div>
-         <h1 @viewSingle="sayHi()">Hi to all.</h1>
-         <component :post="blog" v-for="blog in blogs" :is="component" :component="component"></component>
+         <posts-component v-if="all" :posts="blogs"  @viewPost="readPost($event)"></posts-component>
+         <post-component v-else :row="post" @home="back()"></post-component>
       </div>
    `
 });
