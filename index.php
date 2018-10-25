@@ -6,7 +6,7 @@
             <h2 class="mb-3">Posts</h2>
 
             <div id="app">
-               <posts-component :post="blog" v-for="blog in blogs"></posts-component>
+               <component :post="blog" v-for="blog in blogs" :is="component" :component="component"></component>
             </div>
 
             <div class="form-group text-center mt-4">

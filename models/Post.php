@@ -1,11 +1,11 @@
 <?php
 class Post
 {
-      // DB Stuff
+   // DB Stuff
    private $conn;
    private $table = 'posts';
 
-      // Post Properties
+   // Post Properties
    public $id;
    public $category_id;
    public $category_name;
@@ -14,16 +14,16 @@ class Post
    public $author;
    public $created_at;
 
-      // Constructor with DB
+   // Constructor with DB
    public function __construct($db)
    {
       $this->conn = $db;
    }
 
-      // Get Posts
+   // Get Posts
    public function read()
    {
-         //  Create query
+      //  Create query
       $query = 'SELECT
                c.name as category_name,
                p.id,
@@ -39,10 +39,10 @@ class Post
             ORDER BY
                p.created_at DESC';
 
-         // Prepare Statement
+      // Prepare Statement
       $stmt = $this->conn->prepare($query);
 
-         // Execute query
+      // Execute query
       $stmt->execute();
 
       return $stmt;
@@ -66,18 +66,18 @@ class Post
                p.id = ?
             LIMIT 0,1';
 
-            // Prepare statement
+      // Prepare statement
       $stmt = $this->conn->prepare($query);
 
-            // Bind ID
+      // Bind ID
       $stmt->bindParam(1, $this->id);
 
-            // Execute query
+      // Execute query
       $stmt->execute();
 
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // Set properties
+      // Set properties
       $this->title = $row['title'];
       $this->body = $row['body'];
       $this->author = $row['author'];
