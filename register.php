@@ -2,7 +2,7 @@
    <div class="container">
       <div class="d-flex justify-content-center align-items-center" style="height: 100vh">
          <div class="card text-center w-50">
-            <div class="card-header">
+            <div class="card-header bg-primary text-white">
                <h5>Registration Form</h5>
             </div>
             <div class="card-body">

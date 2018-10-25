@@ -7,10 +7,12 @@
    </div> <!-- /.input-group mb-4 -->
    <h4 class="mb-4">Categories</h4>
    <ul class="list-group list-group-flush">
-      <li class="list-group-item">Technology</li>
-      <li class="list-group-item">Science</li>
-      <li class="list-group-item">Artificial Intelligence</li>
-      <li class="list-group-item">Robotics</li>
-      <li class="list-group-item">System</li>
+      <li class="list-group-item"><a href="#">Bible Verse</a></li>
+      <li class="list-group-item"><a href="#">Lyrics & Chords</a></li>
+      <li class="list-group-item"><a href="#">Guitar Tabs</a></li>
+      <li class="list-group-item"><a href="#">Dictionary</a></li>
+      <li class="list-group-item"><a href="#">Recipes</a></li>
+      <li class="list-group-item"><a href="#">Notes</a></li>
+      <li class="list-group-item"><a href="#">Reviewers</a></li>
    </ul>
 </div> <!-- /.col-md-4 -->
