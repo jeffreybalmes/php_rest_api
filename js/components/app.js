@@ -2,6 +2,7 @@ import PostsList from './posts-component.js';
 import PostSingle from './post-component.js';
 import Navbar from './navbar.js';
 import Sidebar from './sidebar.js';
+import searchBlogs from '../mixins/searchMixin.js';
 
 export default {
    name: 'App',
@@ -13,43 +14,53 @@ export default {
    },
    data() {
       return {
+         allPosts: true,
          blogs: [],
          post: {},
-         all: true
+         filter: '',
+         categories: [],
       }
    },
    methods: {
       readPost(id) {
-         fetch("api/read_single.php?id=" + id)
+         fetch("api/post/read_single.php?id=" + id)
             .then(response => response.json())
             .then((data) => {
                this.post = data;
-               console.log(data);
             });
-         this.all = false
+         this.allPosts = false
       },
       back() {
-         this.all = true;
+         this.allPosts = true;
+      },
+      updateList(search) {
+         this.filter = search;
       }
    },
    mounted() {
       console.log("mounted!");
-      fetch("api/read.php")
+      fetch("api/post/read.php")
          .then(response => response.json())
-         .then((data) => {
-            this.blogs = data;
+         .then((blogs) => {
+            this.blogs = blogs;
+         })
+      fetch("api/category/read.php")
+         .then(response => response.json())
+         .then((categories) => {
+            this.categories = categories;
          })
    },
+   mixins: [searchBlogs],
    template: `
       <div>
          <app-navbar></app-navbar>
          <div class="container">
             <div class="row mt-4">
                <div class="col-md-8">
-                  <posts-component v-if="all" :posts="blogs"  @viewPost="readPost($event)"></posts-component>
+                  <posts-component v-if="allPosts" :posts="filteredBlogs"  @viewPost="readPost($event)"></posts-component>
                   <post-component v-else :row="post" @home="back()"></post-component>
                </div> <!-- /.col-md-8 -->
-               <app-sidebar></app-sidebar>
+               <app-sidebar :cats="categories" @updateList="updateList($event)""></app-sidebar>
             </div>
          </div>
       </div>
