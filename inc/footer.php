@@ -1,7 +1,3 @@
-      <footer class="bg-dark py-4 text-white text-center mt-5">
-         <p class="lead mb-1">PHP Blog</p>
-         <small>&copy; 2018 audiocore</small>
-      </footer>
 
    <!-- Optional JavaScript -->
    <script src="js/vue.js"></script>
