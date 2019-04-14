@@ -1,64 +1,22 @@
-<?php include('inc/header.php'); ?>
-<?php include('inc/navbar.php'); ?>
+<?php
+   include_once 'config/Database.php';
+   include_once 'models/Post.php';
 
-   <div class="container-fluid">
-      <div class="row">
-         <?php include('inc/admin-menu.php'); ?>
-         <div class="col-9">
-            <h2 class="m-5">New Post</h2>
-            <form class="ml-5">
-               <div class="row">
-                  <div class="col-md-8">
-                     <div class="form-group">
-                        <label for="exampleInputPassword1">Title</label>
-                        <input type="text" class="form-control" id="exampleInputPassword1">
-                     </div>
-                     <div class="form-group">
-                        <label for="exampleInputEmail1">Body</label>
-                        <textarea class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" rows="6"></textarea>
-                     </div>
+   // Instantiate DB & connect
+   $database = new Database();
+   $db = $database->connect();
 
-                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        <a href="index.html" class="btn btn-secondary">Cancel</a>
-                     </div>
-                  </div> <!-- /.col-md-8 -->
-                  <div class="col-md-4">
-                     <div class="ml-5">
-                        <div class="form-group">
-                           <div class="mb-2">Categories</div>
-                           <div class="form-check">
-                              <input class="form-check-input" type="checkbox" id="gridCheck1">
-                              <label class="form-check-label" for="gridCheck1">
-                                 Technology
-                              </label>
-                           </div>
-                           <div class="form-check">
-                              <input class="form-check-input" type="checkbox" id="gridCheck1">
-                              <label class="form-check-label" for="gridCheck1">
-                                 Robotics
-                              </label>
-                           </div>
-                           <div class="form-check">
-                              <input class="form-check-input" type="checkbox" id="gridCheck1">
-                              <label class="form-check-label" for="gridCheck1">
-                                 Science
-                              </label>
-                           </div>
-                           <div class="form-check">
-                              <input class="form-check-input" type="checkbox" id="gridCheck1">
-                              <label class="form-check-label" for="gridCheck1">
-                                 System
-                              </label>
-                           </div>
-                           <input type="text" class="form-control form-control-sm mt-3 w-75" id="colFormLabelSm" placeholder="add new category...">
-                        </div>
-                     </div>
-                  </div> <!-- /.col-md-4 -->
-               </div> <!-- /.row -->
-            </form>
-         </div>
-      </div>
-   </div>
+   // Instantiate blog post object
+   $post = new Post($db);
 
-<?php include('inc/footer.php'); ?>
+   if (isset($_POST['submit'])) {
+      // Get raw posted data
+      $post->title = $_POST['title'];
+      $post->body = $_POST['body'];
+      $post->category_id = $_POST['category_id'];
+
+      // Create post
+      $post->create();
+   }
+
+?>
