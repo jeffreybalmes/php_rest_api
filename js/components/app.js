@@ -3,6 +3,7 @@ import PostSingle from './post-component.js';
 import Navbar from './navbar.js';
 import Sidebar from './sidebar.js';
 import searchBlogs from '../mixins/searchMixin.js';
+import Footer from './footer.js';
 
 export default {
    name: 'App',
@@ -10,7 +11,8 @@ export default {
       'posts-component': PostsList,
       'post-component': PostSingle,
       'app-navbar': Navbar,
-      'app-sidebar': Sidebar
+      'app-sidebar': Sidebar,
+      'app-footer': Footer
    },
    data() {
       return {
@@ -54,15 +56,32 @@ export default {
    template: `
       <div>
          <app-navbar></app-navbar>
-         <div class="container">
+         <div class="container mb-5">
             <div class="row mt-4">
+
                <div class="col-md-8">
-                  <posts-component v-if="allPosts" :posts="filteredBlogs"  @viewPost="readPost($event)"></posts-component>
-                  <post-component v-else :row="post" @home="back()"></post-component>
+                  <posts-component
+                     v-if="allPosts"
+                     :posts="filteredBlogs"
+                     @viewPost="readPost($event)">
+                  </posts-component>
+
+                  <post-component
+                     v-else
+                     :row="post"
+                     @home="back()">
+                  </post-component>
                </div> <!-- /.col-md-8 -->
-               <app-sidebar :cats="categories" @updateList="updateList($event)""></app-sidebar>
+
+               <app-sidebar
+                  :cats="categories"
+                  :show="allPosts"
+                  @updateList="back(); updateList($event)">
+               </app-sidebar>
+
             </div>
          </div>
+         <app-footer></app-footer>
       </div>
    `
 };

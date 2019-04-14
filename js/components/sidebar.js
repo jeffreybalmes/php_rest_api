@@ -1,9 +1,16 @@
+import searchInput from './searchInput.js';
+import categoryList from './categoryList.js';
+
 export default {
    name: 'sidebar',
-   props: ['cats'],
+   components: {
+      'search-box': searchInput,
+      'category-list': categoryList
+   },
+   props: ['cats', 'show'],
    data() {
       return {
-         value: '',
+         value: ''
       }
    },
    methods: {
@@ -13,16 +20,17 @@ export default {
    },
    template: `
       <div class="col-md-4">
-         <div class="input-group mb-4">
-            <div class="input-group-prepend">
-               <span class="input-group-text">Search</span>
-            </div>
-            <input type="text" class="form-control" v-model="value" @keyup="filter(value)">
-         </div> <!-- /.input-group mb-4 -->
-         <h4 class="mb-4">Categories</h4>
-         <ul class="list-group list-group-flush">
-            <li v-for="category in cats" class="list-group-item"><a href="#" @click.prevent="filter(category.name)">{{category.name}}</a></li>
-         </ul>
+
+         <search-box
+            v-if="show"
+            @updateList="filter($event)">
+         </search-box>
+
+         <category-list
+            :cats="cats"
+            @updateList="filter($event)">
+         </category-list>
+
       </div> <!-- /.col-md-4 -->
    `
 }
